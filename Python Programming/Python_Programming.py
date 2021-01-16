@@ -2,23 +2,24 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from random import choice
+from random import shuffle
 #1st task
-fail=open("dannie.txt","r")
-mas1=[]
-mas2=[]
-for line in fail:
-    n=line.find(",")
-    mas1.append(line[0:n].strip())
-    mas2.append(int(line[n+1:len(line)].strip()))
-fail.close()
+def first_task(filename,title):
+    with open(filename,"r") as f:
+        mas1=[]
+        mas2=[]
+        for line in f:
+            n=line.find(":")
+            mas1.append(line[0:n].strip())
+            mas2.append(int(line[n+1:len(line)].strip()))
+        plt.title(title)
+        plt.grid(True)
+        color_rectangle=np.random.rand(7, 3)
+        plt.barh(mas1,mas2,color=color_rectangle)
+        plt.show()
+first_task("dannie.txt","Данные о ИТ безопасности")
+first_task("data.txt","COVID-19 cases in January in Estonia")
 
-title = "Data about IT safety"
-plt.grid(True)
-
-color_rectangle = np.random.rand(7, 3)
-plt.barh(mas1, mas2, color=color_rectangle)
-
-plt.show()
 #2nd task
 a=False
 s=0
@@ -27,6 +28,7 @@ answer=""
 colours=["BlueViolet","Brown","CadetBlue","Crimson","ForestGreen","Gold","Sienna","Violet","Black","RoyalBlue"]
 #list of lines to be picked at random
 lines=["dashed","dotted","solid","dashdot"]
+
 #Glasses
 x1_gl=np.arange(-9,0)
 x2_gl=np.arange(1,10)
@@ -58,17 +60,19 @@ boat={"x1_b":[(-1/3)*x1_b**2+11,(1/3)*x1_b**2+5],#two y's have the same x
       }
 #Umbrella
 x1_u=np.arange(-12,13,2)
-x2_u=np.arange(-4,5,1)
+x2_u=np.arange(-4,5)
 x3_u=np.arange(-12,-3,2)
-x4_u=np.arange(4,13,2)
-x5_u=np.arange(-4,-0.2,0.1)
-x6_u=np.arange(-4,0.1,0.1)
+x4_u=np.arange(4,12)
+x5_u=np.arange(-4,-0.25,0.01)
+x6_u=np.arange(-4,0.26,0.01)
+x7_u=np.arange(-8.5,-6.9,0.1)#This is an additional formula, This is y
 umbrella={"x1_u":[(-1/18)*x1_u**2+12],
           "x2_u":[(-1/8)*x2_u**2+6],
           "x3_u":[(-1/8)*(x3_u+8)**2+6],
           "x4_u":[(-1/8)*(x4_u-8)**2+6],
           "x5_u":[2*(x5_u+3)**2-9],
-          "x6_u":[1.5*(x6_u+3)**2-10]
+          "x6_u":[1.5*(x6_u+3)**2-10],
+          "x7_u":[-4]*len(x7_u)#This is an additional formula, This is x
           }
 #Butterfly
 x1_f=np.arange(-9,0)
@@ -128,7 +132,29 @@ toad={"x1_t":[(-3/49)*x1_t**2+8,(4/49)*x1_t**2+1],#two y's have the same x
       "x13_t":[-1*(x13_t-5)**2],
       "x14_t":[(2/9)*x14_t**2+2]
       }
-pictures=[butterfly,umbrella,boat,glasses,toad]
+x1_w=np.arange(0,10)
+x2_w=np.arange(-10,1)
+x3_w=np.arange(-9,-2)
+x4_w=np.arange(-3,10)
+x5_w=np.arange(5,8.6,0.1)
+x6_w=np.arange(5,7.9,0.1)
+x7_w=np.arange(-13,-8)
+x8_w=np.arange(-15,-12)
+x9_w=np.arange(-15,-9)
+x10_w=np.arange(3,5)
+whale={"x1_w":[(2/27)*x1_w**2-3],
+       "x2_w":[0.04*x2_w**2-3],
+       "x3_w":[(2/9)*(x3_w+6)**2+1],
+       "x4_w":[(-1/12)*(x4_w-3)**2+6],
+       "x5_w":[(1/9)*(x5_w-5)**2+2],
+       "x6_w":[(1/8)*(x6_w-7)**2+1.5],
+       "x7_w":[-0.75*(x7_w+11)**2+6],
+       "x8_w":[-0.5*(x8_w+13)**2+3],
+       "x9_w":[[1]*len(x9_w)],
+       "x10_w":[[3]*len(x10_w)]
+       }
+pictures=[whale,butterfly,umbrella,boat,glasses,toad]
+shuffle(pictures)
 for k in pictures:
     if s<4:
         s+=1
@@ -137,17 +163,20 @@ for k in pictures:
     lrng=choice(lines)
     for j in k:
         for i in k[j]:
-            if j=="x2_b":#an exception for this specific x, I switched the values of x and y for them to work and here i switch tehm back
+            if j=="x2_b":#an exception for this specific x, I switched the values of x and y for them to work and here i switch them back
                 y=x2_b
                 x=boat[j]
+            elif j=="x7_u":#an exception for this specific x, I switched the values of x and y for them to work and here i switch them back
+                y=x7_u
+                x=umbrella[j]
             else:
                 x=eval(j)
                 y=i
-            plt.plot(x,y,ls=f"{lrng}",c=f"{crng}",lw=3)#random colour and linestyle
+            plt.plot(x,y,ls=f"{lrng}",c=f"{crng}",lw=2)#random colour and linestyle
     plt.grid(axis="y",c="black",alpha=0.4,lw=2)
     plt.grid(axis="x",alpha=0)
     plt.xticks(np.arange(-15,16,5))
-    if k==boat:#Doing this to make the boat look better, it looked a little squished before
+    if k==boat or k==whale:#Doing this to make the boat look better, it looked a little squished before
         plt.yticks(np.arange(-5,16,5))
     else:
         plt.yticks(np.arange(-15,16,5))
