@@ -21,7 +21,6 @@ plt.barh(mas1, mas2, color=color_rectangle)
 plt.show()
 #2nd task
 a=False
-t=1
 s=0
 answer=""
 #List of colours to be picked at random
@@ -145,16 +144,13 @@ for k in pictures:
                 x=eval(j)
                 y=i
             plt.plot(x,y,ls=f"{lrng}",c=f"{crng}",lw=3)#random colour and linestyle
-            t+=1
-    plt.xlabel("X")
-    plt.ylabel("Y")
-    plt.grid(axis="y",c="black",alpha=0.4,lw=1)
+    plt.grid(axis="y",c="black",alpha=0.4,lw=2)
     plt.grid(axis="x",alpha=0)
     plt.xticks(np.arange(-15,16,5))
     if k==boat:#Doing this to make the boat look better, it looked a little squished before
-        plt.yticks(np.arange(-9,16,3))
+        plt.yticks(np.arange(-5,16,5))
     else:
-        plt.yticks(np.arange(-15,16,3))
+        plt.yticks(np.arange(-15,16,5))
     plt.grid(True)
     if s==4:
         plt.show()
